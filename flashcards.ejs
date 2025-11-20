@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= moduleName %> Flashcards - DevSprint</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <div class="container mt-5">
+    <div class="text-center mb-4">
+      <h2 style="color: #1f2937; font-weight: 700; font-size: 2rem; margin-bottom: 0.5rem;">
+        <i class="fas fa-clone me-2" style="color: #6366f1;"></i><%= moduleName %> Flashcards
+      </h2>
+      <p style="color: #6b7280; font-size: 1rem;">Click, swipe, or use ←/→ keys to navigate. Press Space to flip.</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress" style="height: 12px; background: #e5e7eb;">
+            <div class="progress-bar bg-primary" id="progressBar" role="progressbar" style="width: 0%; background: linear-gradient(90deg, #6366f1, #3b82f6);"></div>
+          </div>
+          <div class="d-flex justify-content-between mt-2">
+            <small style="color: #4b5563; font-weight: 500;">Progress</small>
+            <small style="color: #4b5563; font-weight: 500;" id="progressText">0 / <%= (flashcards || []).length %></small>
+          </div>
+        </div>
+
+        <!-- Flashcard -->
+        <div class="flashcard-container mb-4">
+          <div class="flashcard-inner" id="flashcardInner">
+            <div class="flashcard-front">
+              <div class="flashcard-text" id="frontText">Loading...</div>
+            </div>
+            <div class="flashcard-back">
+              <div class="flashcard-text" id="backText">Loading...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <button class="btn btn-outline-primary nav-btn" id="prevBtn" onclick="changeCard(-1)" style="background: white; color: #6366f1; border: 2px solid #6366f1;">
+            <i class="fas fa-chevron-left me-2"></i>Previous
+          </button>
+          
+          <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-outline-secondary shuffle-btn" id="shuffleBtn" onclick="shuffleCards()" title="Shuffle cards" style="background: white; color: #6b7280; border: 2px solid #e5e7eb; padding: 0.5rem 1rem;">
+              <i class="fas fa-random me-2"></i>Shuffle
+            </button>
+            <button class="favorite-btn" id="favoriteBtn" onclick="toggleFavorite()" title="Mark as favorite" style="background: none; border: none; font-size: 1.75rem; cursor: pointer; padding: 0.5rem; color: #6b7280;">
+              <i class="far fa-star"></i>
+            </button>
+            <span class="badge bg-primary rounded-pill px-3 py-2" id="cardCounter" style="background: #6366f1; color: white; font-size: 1rem; padding: 0.75rem 1.5rem;">
+              1 / <%= (flashcards || []).length %>
+            </span>
+          </div>
+          
+          <button class="btn btn-outline-primary nav-btn" id="nextBtn" onclick="changeCard(1)" style="background: white; color: #6366f1; border: 2px solid #6366f1;">
+            Next<i class="fas fa-chevron-right ms-2"></i>
+          </button>
+        </div>
+
+        <div class="text-center">
+          <a href="/learning/modules" class="btn btn-secondary rounded-pill" style="background: white; color: #4b5563;">
+            <i class="fas fa-arrow-left me-2"></i>Back to Modules
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const cards = <%- JSON.stringify(flashcards || []) %>;
+    let currentIndex = 0;
+    let isFlipped = false;
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '{}');
+    let originalOrder = [...cards];
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    function updateCard() {
+      if (cards.length === 0) return;
+      
+      const card = cards[currentIndex];
+      const frontText = document.getElementById('frontText');
+      const backText = document.getElementById('backText');
+      const cardCounter = document.getElementById('cardCounter');
+      const progressBar = document.getElementById('progressBar');
+      const progressText = document.getElementById('progressText');
+      const favoriteBtn = document.getElementById('favoriteBtn');
+      
+      if (frontText) frontText.textContent = card.front;
+      if (backText) backText.textContent = card.back;
+      if (cardCounter) cardCounter.textContent = `${currentIndex + 1} / ${cards.length}`;
+      
+      const progress = ((currentIndex + 1) / cards.length) * 100;
+      if (progressBar) progressBar.style.width = progress + '%';
+      if (progressText) progressText.textContent = `${currentIndex + 1} / ${cards.length}`;
+      
+      // Update favorite button
+      const cardId = card._id || currentIndex;
+      if (favoriteBtn) {
+        const icon = favoriteBtn.querySelector('i');
+        if (favorites[cardId]) {
+          icon.className = 'fas fa-star';
+          favoriteBtn.style.color = '#fbbf24';
+        } else {
+          icon.className = 'far fa-star';
+          favoriteBtn.style.color = '#6b7280';
+        }
+      }
+      
+      // Reset flip state when changing cards
+      if (isFlipped) {
+        const inner = document.getElementById('flashcardInner');
+        if (inner) inner.classList.remove('flipped');
+        isFlipped = false;
+      }
+      
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      if (prevBtn) prevBtn.disabled = currentIndex === 0;
+      if (nextBtn) nextBtn.disabled = currentIndex === cards.length - 1;
+    }
+
+    function changeCard(direction) {
+      if (currentIndex + direction >= 0 && currentIndex + direction < cards.length) {
+        currentIndex += direction;
+        isFlipped = false;
+        updateCard();
+      }
+    }
+
+    function flipCard() {
+      isFlipped = !isFlipped;
+      const inner = document.getElementById('flashcardInner');
+      if (inner) {
+        if (isFlipped) {
+          inner.classList.add('flipped');
+        } else {
+          inner.classList.remove('flipped');
+        }
+      }
+    }
+
+    function shuffleCards() {
+      // Fisher-Yates shuffle
+      for (let i = cards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cards[i], cards[j]] = [cards[j], cards[i]];
+      }
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function toggleFavorite() {
+      const cardId = cards[currentIndex]._id || currentIndex;
+      if (favorites[cardId]) {
+        delete favorites[cardId];
+      } else {
+        favorites[cardId] = true;
+      }
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      updateCard();
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        changeCard(-1);
+      } else if (e.key === 'ArrowRight') {
+        changeCard(1);
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        flipCard();
+      }
+    });
+
+    // Touch swipe support
+    const flashcardInner = document.getElementById('flashcardInner');
+    if (flashcardInner) {
+      flashcardInner.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      flashcardInner.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+    }
+
+    function handleSwipe() {
+      const swipeThreshold = 50;
+      const diff = touchStartX - touchEndX;
+      
+      if (Math.abs(diff) > swipeThreshold) {
+        if (diff > 0) {
+          changeCard(1);
+        } else {
+          changeCard(-1);
+        }
+      } else {
+        flipCard();
+      }
+    }
+
+    // Click to flip
+    if (flashcardInner) {
+      flashcardInner.addEventListener('click', flipCard);
+    }
+
+    // Initialize
+    updateCard();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

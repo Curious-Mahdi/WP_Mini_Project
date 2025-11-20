@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - DevSprint</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <div class="container mt-5">
+    <div class="text-center mb-5">
+      <h2 style="color: #1f2937; font-weight: 700; font-size: 2.5rem; margin-bottom: 0.5rem;">
+        <i class="fas fa-trophy me-2" style="color: #f59e0b;"></i>Leaderboard
+      </h2>
+      <p style="color: #6b7280; font-size: 1.1rem;">Top performers across all modules</p>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div class="card shadow-lg" style="background: white; border-radius: 24px; padding: 2rem;">
+          <% if (leaderboard && leaderboard.length > 0) { %>
+            <% leaderboard.forEach((user, index) => { %>
+              <div class="leaderboard-item">
+                <div class="leaderboard-rank" style="<%= index === 0 ? 'color: #fbbf24;' : index === 1 ? 'color: #9ca3af;' : index === 2 ? 'color: #cd7f32;' : 'color: #6b7280;' %>">
+                  <% if (index === 0) { %>
+                    <i class="fas fa-medal" style="font-size: 2rem;"></i>
+                  <% } else if (index === 1) { %>
+                    <i class="fas fa-medal" style="font-size: 2rem;"></i>
+                  <% } else if (index === 2) { %>
+                    <i class="fas fa-medal" style="font-size: 2rem;"></i>
+                  <% } else { %>
+                    #<%= index + 1 %>
+                  <% } %>
+                </div>
+                <div class="leaderboard-user">
+                  <div class="leaderboard-name" style="font-weight: 600; font-size: 1.1rem; color: #1f2937;"><%= user.name %></div>
+                  <div class="leaderboard-score" style="font-size: 0.875rem; color: #6b7280;">
+                    <%= user.completedModules %> modules completed
+                  </div>
+                </div>
+                <div class="leaderboard-total" style="font-size: 1.5rem; font-weight: 700; color: #6366f1;">
+                  <%= user.totalScore %> pts
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <div class="text-center py-5">
+              <i class="fas fa-users" style="font-size: 4rem; color: #9ca3af; margin-bottom: 1rem;"></i>
+              <p style="color: #6b7280; font-size: 1.1rem;">No scores yet. Be the first to complete a quiz!</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/learning/modules" class="btn btn-primary rounded-pill" style="background: linear-gradient(135deg, #6366f1, #4f46e5); padding: 0.75rem 2rem; color: white;">
+        <i class="fas fa-arrow-left me-2"></i>Back to Modules
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

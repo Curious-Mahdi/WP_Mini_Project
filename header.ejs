@@ -1,0 +1,91 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<nav class="modern-navbar">
+  <div class="nav-container">
+    <button class="hamburger-menu" id="hamburgerMenu" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <a class="navbar-brand" href="/learning/modules">
+      <i class="fas fa-rocket brand-icon" style="color: #6366f1; font-size: 1.5rem;"></i>
+      <span class="brand-text">DevSprint</span>
+    </a>
+    <div class="nav-user">
+      <span class="user-name"><%= typeof userName !== 'undefined' ? userName : 'User' %></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar Menu -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<aside class="sidebar-menu" id="sidebarMenu">
+  <div class="sidebar-header">
+    <h3>Menu</h3>
+    <button class="sidebar-close" id="sidebarClose">&times;</button>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="/learning/modules" class="sidebar-item">
+      <i class="fas fa-home sidebar-icon"></i>
+      <span>Home</span>
+    </a>
+    <a href="/learning/modules" class="sidebar-item">
+      <i class="fas fa-book sidebar-icon"></i>
+      <span>Modules</span>
+    </a>
+    <a href="/learning/progress" class="sidebar-item">
+      <i class="fas fa-chart-line sidebar-icon"></i>
+      <span>My Progress</span>
+    </a>
+    <a href="/learning/achievements" class="sidebar-item">
+      <i class="fas fa-trophy sidebar-icon"></i>
+      <span>Achievements</span>
+    </a>
+    <a href="/learning/leaderboard" class="sidebar-item">
+      <i class="fas fa-medal sidebar-icon"></i>
+      <span>Leaderboard</span>
+    </a>
+    <a href="/learning/study-guide" class="sidebar-item">
+      <i class="fas fa-graduation-cap sidebar-icon"></i>
+      <span>Study Guide</span>
+    </a>
+    <a href="/auth/logout" class="sidebar-item">
+      <i class="fas fa-sign-out-alt sidebar-icon"></i>
+      <span>Logout</span>
+    </a>
+  </nav>
+</aside>
+
+<script>
+  // Sidebar toggle
+  const hamburgerMenu = document.getElementById('hamburgerMenu');
+  const sidebarMenu = document.getElementById('sidebarMenu');
+  const sidebarOverlay = document.getElementById('sidebarOverlay');
+  const sidebarClose = document.getElementById('sidebarClose');
+
+  function openSidebar() {
+    sidebarMenu.classList.add('active');
+    sidebarOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebarMenu.classList.remove('active');
+    sidebarOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  hamburgerMenu?.addEventListener('click', openSidebar);
+  sidebarClose?.addEventListener('click', closeSidebar);
+  sidebarOverlay?.addEventListener('click', closeSidebar);
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebarMenu.classList.contains('active')) {
+      closeSidebar();
+    }
+  });
+</script>

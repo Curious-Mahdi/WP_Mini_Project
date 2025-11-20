@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Answers - DevSprint</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <div class="container mt-5">
+    <div class="text-center mb-4">
+      <h2 style="color: #1f2937; font-weight: 700; font-size: 2rem; margin-bottom: 0.5rem;">
+        <i class="fas fa-book-open me-2" style="color: #6366f1;"></i><%= moduleName %> Quiz Review
+      </h2>
+      <p style="color: #6b7280; font-size: 1rem;">Score: <strong><%= score %>/<%= total %></strong></p>
+    </div>
+
+    <div class="quiz-container">
+      <% questions.forEach((q, index) => { %>
+        <div class="card shadow-lg mb-4" style="background: white; border-radius: 20px; overflow: hidden;">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="card-title mb-0" style="font-weight: 600; font-size: 1.25rem;">
+                <span class="badge rounded-pill me-2" style="<%= q.isCorrect ? 'background: #10b981; color: white;' : 'background: #ef4444; color: white;' %>">
+                  Question <%= index + 1 %>
+                </span>
+                <%= q.question %>
+              </h5>
+              <% if (q.isCorrect) { %>
+                <i class="fas fa-check-circle" style="font-size: 2rem; color: #10b981;"></i>
+              <% } else { %>
+                <i class="fas fa-times-circle" style="font-size: 2rem; color: #ef4444;"></i>
+              <% } %>
+            </div>
+            
+            <div class="quiz-options">
+              <% q.options.forEach((option, optIndex) => { %>
+                <div class="quiz-option" style="<%= optIndex === q.correctAnswer ? 'border-color: #10b981; background: #d1fae5;' : (optIndex === q.userAnswer && !q.isCorrect ? 'border-color: #ef4444; background: #fee2e2;' : 'border-color: #e5e7eb; background: white;') %>">
+                  <div class="d-flex align-items-center">
+                    <span class="badge me-3" style="min-width: 36px; text-align: center; padding: 0.5rem; font-size: 1rem; border-radius: 8px; <%= optIndex === q.correctAnswer ? 'background: #10b981; color: white;' : 'background: #6b7280; color: white;' %>">
+                      <%= optIndex + 1 %>
+                    </span>
+                    <span style="flex: 1; font-weight: <%= optIndex === q.correctAnswer ? '600' : '400' %>;"><%= option %></span>
+                    <% if (optIndex === q.correctAnswer) { %>
+                      <span style="color: #10b981; font-weight: 700; margin-left: 1rem;">
+                        <i class="fas fa-check me-1"></i>Correct
+                      </span>
+                    <% } else if (optIndex === q.userAnswer && !q.isCorrect) { %>
+                      <span style="color: #ef4444; font-weight: 700; margin-left: 1rem;">
+                        <i class="fas fa-times me-1"></i>Your Answer
+                      </span>
+                    <% } %>
+                  </div>
+                </div>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+
+    <div class="text-center mt-4 mb-5">
+      <a href="/learning/practice/<%= module %>" class="btn btn-primary rounded-pill me-2" style="padding: 0.875rem 2rem; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+        <i class="fas fa-redo me-2"></i>Practice Mistakes
+      </a>
+      <a href="/learning/modules" class="btn btn-secondary rounded-pill" style="padding: 0.875rem 2rem; background: white; color: #4b5563;">
+        <i class="fas fa-arrow-left me-2"></i>Back to Modules
+      </a>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

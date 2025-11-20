@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modules - DevSprint</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <div class="container mt-5">
+    <div class="text-center mb-5">
+      <h1 style="color: #1f2937; font-weight: 800; font-size: 2.5rem; margin-bottom: 0.5rem;">
+        Welcome, <%= userName %>!
+      </h1>
+      <p style="color: #4b5563; font-size: 1.1rem;">Choose a module to start your learning journey</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-4 col-lg-4">
+        <div class="card h-100 shadow-lg module-card">
+          <div class="card-body text-center p-5">
+            <i class="fab fa-html5" style="font-size: 4rem; margin-bottom: 1rem; color: #e34c26;"></i>
+            <h3 class="card-title mb-3" style="font-weight: 700; font-size: 1.75rem;">HTML</h3>
+            <p class="card-text mb-4" style="color: #6b7280; font-size: 1rem;">Learn the structure of web pages</p>
+            <div class="d-grid gap-2">
+              <a href="/learning/flashcards/html" class="btn btn-outline-primary rounded-pill" style="padding: 0.75rem 1.5rem;">
+                <i class="fas fa-clone me-2"></i>Flashcards
+              </a>
+              <a href="/learning/practice/html" class="btn btn-outline-success rounded-pill" style="padding: 0.75rem 1.5rem; border: 2px solid #10b981; color: #10b981;">
+                <i class="fas fa-dumbbell me-2"></i>Practice
+              </a>
+              <a href="/learning/quiz/html" class="btn btn-primary rounded-pill" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                <i class="fas fa-question-circle me-2"></i>Quiz
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-4">
+        <div class="card h-100 shadow-lg module-card">
+          <div class="card-body text-center p-5">
+            <i class="fab fa-css3-alt" style="font-size: 4rem; margin-bottom: 1rem; color: #264de4;"></i>
+            <h3 class="card-title mb-3" style="font-weight: 700; font-size: 1.75rem;">CSS</h3>
+            <p class="card-text mb-4" style="color: #6b7280; font-size: 1rem;">Style and design beautiful websites</p>
+            <div class="d-grid gap-2">
+              <a href="/learning/flashcards/css" class="btn btn-outline-primary rounded-pill" style="padding: 0.75rem 1.5rem;">
+                <i class="fas fa-clone me-2"></i>Flashcards
+              </a>
+              <a href="/learning/practice/css" class="btn btn-outline-success rounded-pill" style="padding: 0.75rem 1.5rem; border: 2px solid #10b981; color: #10b981;">
+                <i class="fas fa-dumbbell me-2"></i>Practice
+              </a>
+              <a href="/learning/quiz/css" class="btn btn-primary rounded-pill" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                <i class="fas fa-question-circle me-2"></i>Quiz
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-lg-4">
+        <div class="card h-100 shadow-lg module-card">
+          <div class="card-body text-center p-5">
+            <i class="fab fa-js-square" style="font-size: 4rem; margin-bottom: 1rem; color: #f7df1e;"></i>
+            <h3 class="card-title mb-3" style="font-weight: 700; font-size: 1.75rem;">JavaScript</h3>
+            <p class="card-text mb-4" style="color: #6b7280; font-size: 1rem;">Add interactivity to your pages</p>
+            <div class="d-grid gap-2">
+              <a href="/learning/flashcards/js" class="btn btn-outline-primary rounded-pill" style="padding: 0.75rem 1.5rem;">
+                <i class="fas fa-clone me-2"></i>Flashcards
+              </a>
+              <a href="/learning/practice/js" class="btn btn-outline-success rounded-pill" style="padding: 0.75rem 1.5rem; border: 2px solid #10b981; color: #10b981;">
+                <i class="fas fa-dumbbell me-2"></i>Practice
+              </a>
+              <a href="/learning/quiz/js" class="btn btn-primary rounded-pill" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                <i class="fas fa-question-circle me-2"></i>Quiz
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-6">
+        <div class="card h-100 shadow-lg module-card">
+          <div class="card-body text-center p-5">
+            <i class="fab fa-react" style="font-size: 4rem; margin-bottom: 1rem; color: #61dafb;"></i>
+            <h3 class="card-title mb-3" style="font-weight: 700; font-size: 1.75rem;">React</h3>
+            <p class="card-text mb-4" style="color: #6b7280; font-size: 1rem;">Build modern user interfaces</p>
+            <div class="d-grid gap-2">
+              <a href="/learning/flashcards/react" class="btn btn-outline-primary rounded-pill" style="padding: 0.75rem 1.5rem;">
+                <i class="fas fa-clone me-2"></i>Flashcards
+              </a>
+              <a href="/learning/practice/react" class="btn btn-outline-success rounded-pill" style="padding: 0.75rem 1.5rem; border: 2px solid #10b981; color: #10b981;">
+                <i class="fas fa-dumbbell me-2"></i>Practice
+              </a>
+              <a href="/learning/quiz/react" class="btn btn-primary rounded-pill" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                <i class="fas fa-question-circle me-2"></i>Quiz
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-6">
+        <div class="card h-100 shadow-lg module-card">
+          <div class="card-body text-center p-5">
+            <i class="fab fa-node-js" style="font-size: 4rem; margin-bottom: 1rem; color: #339933;"></i>
+            <h3 class="card-title mb-3" style="font-weight: 700; font-size: 1.75rem;">Node.js</h3>
+            <p class="card-text mb-4" style="color: #6b7280; font-size: 1rem;">Server-side JavaScript development</p>
+            <div class="d-grid gap-2">
+              <a href="/learning/flashcards/node" class="btn btn-outline-primary rounded-pill" style="padding: 0.75rem 1.5rem;">
+                <i class="fas fa-clone me-2"></i>Flashcards
+              </a>
+              <a href="/learning/practice/node" class="btn btn-outline-success rounded-pill" style="padding: 0.75rem 1.5rem; border: 2px solid #10b981; color: #10b981;">
+                <i class="fas fa-dumbbell me-2"></i>Practice
+              </a>
+              <a href="/learning/quiz/node" class="btn btn-primary rounded-pill" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                <i class="fas fa-question-circle me-2"></i>Quiz
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
